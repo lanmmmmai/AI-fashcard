@@ -27,11 +27,15 @@ TEMPERATURE=0.5
 MAX_TOKENS=1200
 DB_PATH=db/flashcards.db
 Cài đặt
+<pre>
+```bash
 python -m venv .venv
 source .venv/bin/activate   # Linux/Mac
 .venv\Scripts\Activate.ps1  # Windows
-
 pip install -r requirements.txt
+```
+</pre>
+
 Chạy ứng dụng:
 Giao diện web (Streamlit):
 streamlit run app/app.py
