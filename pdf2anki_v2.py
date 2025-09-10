@@ -4,6 +4,7 @@ from PyPDF2 import PdfReader
 from openai import OpenAI
 import sqlite3
 import os
+import re
 
 # ================== SETUP ==================
 load_dotenv()  
@@ -32,6 +33,26 @@ def ask_openai(prompt):
         temperature=0.7
     )
     return response.choices[0].message.content
+
+
+def parse_flashcards(result: str):
+    """Parse flashcards from LLM output.
+
+    The LLM output can vary in format (Vietnamese/English, with or without
+    prefixes). This function uses regular expressions to extract question and
+    answer pairs robustly, returning a list of ``(question, answer)`` tuples.
+    """
+
+    cards = []
+    blocks = re.split(r"\n\s*\n", result.strip())
+    for block in blocks:
+        q_match = re.search(r"(Câu\s*hỏi|Question|Q)\s*:([^\n]+)", block, re.IGNORECASE)
+        a_match = re.search(r"(Trả\s*lời|Answer|A)\s*:([^\n]+)", block, re.IGNORECASE)
+        if q_match and a_match:
+            q = q_match.group(2).strip()
+            a = a_match.group(2).strip()
+            cards.append((q, a))
+    return cards
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)
@@ -105,13 +126,7 @@ if st.button("Tạo kết quả"):
                     save_result(mode, lang, result)
 
                     # Parse flashcards
-                    cards = []
-                    for block in result.split("\n\n"):
-                        lines = block.strip().split("\n")
-                        if len(lines) >= 2:
-                            q = lines[0].replace("Câu hỏi:", "").strip()
-                            a = lines[1].replace("Trả lời:", "").strip()
-                            cards.append((q, a))
+                    cards = parse_flashcards(result)
 
                     # Hiển thị flashcards (flip)
                     html_cards = """
