@@ -4,7 +4,7 @@ Tạo flashcard và tóm tắt tự động từ file PDF bằng mô hình GPT, 
 
 🌐 Giới thiệu & Tham khảo
 	•	Đây là dự án học tập, phát triển dựa trên nhu cầu tự động hóa việc ôn tập từ tài liệu PDF.
-	•	Liên kết tham khảo: Khoa Công nghệ thông tin – Đại học Đại Nam
+	•	Liên kết tham khảo: [Khoa Công nghệ thông tin – Đại học Đại Nam](https://dainam.edu.vn/vi/khoa/khoa-cong-nghe-thong-tin)
 
 ✨ Tính năng chính
 	•	📄 Trích xuất văn bản từ PDF (PyPDF2)
